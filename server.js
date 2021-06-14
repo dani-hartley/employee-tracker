@@ -1,5 +1,7 @@
 const express = require ('express');
-const sequelize = require('./db/connection');
+const db = require('./db/connection');
+const { companyMenu } = require('./Index');
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,10 +17,7 @@ app.use((req, res) => {
 });
 
 // Start server after DB connection
-sequelize.connect(err => {
+db.connect(err => {
     if (err) throw err;
-    console.log('Database connected.');
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+    companyMenu();
     });
-});
