@@ -19,6 +19,10 @@ const companyMenu = function () {
         }
     ]).then((action) => {
         console.log(action);
+        switch (action) {
+            case 'View all departments'
+        }
+
     })
 }
 
