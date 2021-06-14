@@ -9,7 +9,7 @@ const companyMenu = function () {
         {
             type: 'list',
             name: 'action',
-            message: 'What action  you want to take?',
+            message: 'What action would you like to take?',
             choices: [
                 'View all departments',
                 'View all roles',
@@ -17,7 +17,8 @@ const companyMenu = function () {
                 'Add a department',
                 'Add a role',
                 'Add an employee',
-                'Update an employee role'
+                'Update an employee role',
+                'Exit'
             ]
         }
     ]).then(({ action }) => {
@@ -44,6 +45,10 @@ const companyMenu = function () {
             case "Update an employee role":
                 updateEmployeeRole();
                 break;
+            case "Exit":
+                console.log("Goodbye");
+                db.end();
+                break;
         }
     });
 }
@@ -58,8 +63,8 @@ function viewDepartments() {
             const [rows] = data;
             console.log("/n");
             console.table('Departments', rows);
+            companyMenu(); 
         });
-    companyMenu();
 };
 
 // view all roles
@@ -72,8 +77,8 @@ function viewRoles() {
             const [rows] = data;
             console.log("\n");
             console.table('Roles', rows);
+            companyMenu();
         });
-    companyMenu();
 }
 
 // view all employees
@@ -91,8 +96,8 @@ function viewEmployees() {
             const [rows] = data;
             console.log("\n");
             console.table('Employees', rows);
+            companyMenu();
         });
-    companyMenu();
 }
 
 // add a department
@@ -100,7 +105,7 @@ function addDepartment() {
     inquirer
         .prompt({
             type: "input",
-            message: "New department name:",
+            message: "Enter new department name:",
             name: "new_department",
         })
         .then(function (answer) {
@@ -115,7 +120,7 @@ function addDepartment() {
                     }
                 }
             ),
-                console.log("New department added to database.");
+                console.log("New department has been added to the database.");
             console.log("\n");
             console.table('New department', answer);
             companyMenu();
@@ -128,7 +133,7 @@ addRole = () => {
         .prompt([
             {
                 type: "input",
-                message: "New role name:",
+                message: "Enter new role name:",
                 name: "new_role"
             },
             {
@@ -158,7 +163,7 @@ addRole = () => {
                         const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
                         db.query(sql, params, (err, result) => {
                             if (err) throw err;
-                            console.log("\nNew role " + answer.new_role + "added to database.\n");
+                            console.log("\nNew role " + answer.new_role + " has been added to the database.\n");
                             companyMenu();
                         })
                     })
@@ -215,7 +220,7 @@ function addEmployee() {
                             if (err) {
                                 throw err;
                             }
-                            console.log("\nNew employee " + answer.first_name + " " + answer.last_name + "added to database.\n");
+                            console.log("\nNew employee " + answer.first_name + " " + answer.last_name + "has been added to database.\n");
                             companyMenu();
                         }
                     );
